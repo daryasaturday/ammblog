@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="panel right">
+        <h1>Create a post</h1>
+        <p>
+            <form action="/submit" method="post">
+            {% for field in blogpost_form %}{% csrf_token %}
+                {{ field.errors }}
+            {{ field }}
+            {% endfor %}
+            <input type="hidden" value="{{ next_url }}" name="next_url">
+            <input type="submit" value="Post!">
+            </form>
+        </p>
+    </div>
+    <div class="panel left">
+        <h1>Buddies' posts</h1>
+        {% for blogPost in blogPosts %}
+        <div class="blogWrapper">
+            <a href="/users/{{ blogPost.user.username }}">
+                <span class="name">{{ blogPost.user.first_name }}</span>
+            </a>
+            @{{ blogPost.user.username }}
+            <span class="time">{{ blogPost.creation_date|timesince }}</span>
+            <p>{{ blogPost.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

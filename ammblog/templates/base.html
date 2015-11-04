@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet/less" href="{{ STATIC_URL }}style.less">
+    <script src="{{ STATIC_URL }}less.js"></script>
+    <link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+    <link rel="stylesheet" href="{{ STATIC_URL }}login.css">
+</head>
+<body>
+<header>
+    {% if not user.is_anonymous %}
+        <div class="wrapper">
+            <a href="/">Home</a>
+            <a href="/users/">Public Profiles</a>
+            <a href="/users/{{ username }}">My Profile</a>
+            <form action="/logout">
+                <input type="submit" id="btnLogOut" value="Log Out">
+            </form>
+        </div>
+    {% endif %}
+</header>
+<div id="content">
+    <div class="wrapper">
+        {% block flash %}
+            {% if auth_form.non_field_errors or user_form.non_field_errors or ribbit_form.non_field_errors %}
+                <div class="flash error">
+                    {{ auth_form.non_field_errors }}
+                    {{ user_form.non_field_errors }}
+                    {{ ribbit_form.non_field_errors }}
+                </div>
+            {% endif %}
+            {% if notice %}
+                <div class="flash notice">
+                    {{ notice }}
+                </div>
+            {% endif %}
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="panel right">
+        <h1>New to our blog?</h1>
+        <form action="/signup" method="post">{% csrf_token %}
+            {% for field in user_form %}
+                {{ field.errors }}
+                {{ field }}
+            {% endfor %}
+            <input type="submit" value="Create Account">
+        </form>
+    </div>
+{% endblock %}

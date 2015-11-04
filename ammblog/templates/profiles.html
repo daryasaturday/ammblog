@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="panel left">
+        <h1>Public Profiles</h1>
+        {% for user, post in obj %}
+            <div class="blogWrapper">
+                <a href="/users/{{ user.username }}">
+                    <span class="name">{{ user.first_name }}</span>
+                </a>
+                @{{ user.username }}
+                <p>
+                    {{ user.blogpost_count }} Posts
+                    <span class="spacing">{{ user.profile.followed_by.count }} Followers</span>
+                    <span class="spacing">{{ user.profile.follows.count }} Following</span>
+                </p>
+                {% if post %}
+                    <p>Last post: {{ post.content }}</p>
+                {% else %}
+                    <p>Hasn't posted anything yet.</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

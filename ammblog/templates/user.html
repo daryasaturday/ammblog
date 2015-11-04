@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="panel left">
+        <h1>{{ user.first_name }}'s Profile</h1>
+        <div class="blogWrapper">
+            <a href="/users/{{ user.username }}">
+                <span class="name">{{ user.first_name }}</span>
+            </a>
+                @{{ user.username }}
+            <p>
+                {{ blogPosts.count }} Posts
+                <span class="spacing">{{ user.profile.follows.all.count }} Following</span>
+                <span class="spacing">{{ user.profile.followed_by.all.count }} Followers</span>
+            </p>
+            {% if user.username != username %}
+            <form action="/follow" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="follow" value="{{ user.id }}">
+                <input type="submit" value= "{% if follow %}Follow {% else %} Unfollow {% endif %}">
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="panel left">
+        <h1>{{ user.first_name }}'s Posts</h1>
+        {% for blogPost in blogPosts %}
+        <div class="blogWrapper">
+            <a href="/users/{{ user.username }}">
+                <span class="name">{{ blogPost.user.first_name }}</span>
+            </a>
+            @{{ blogPost.user.username }}
+            <span class="time">{{ blogPost.creation_date|timesince }}</span>
+            <p>{{ blogPost.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

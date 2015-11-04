@@ -1,0 +1,157 @@
+@text-color: #4d90fe;
+@border-color: #1d109e;
+@content-width: 860px;
+
+.antialiased (@color) {
+  color: @color;
+  text-shadow: @color 0 0 1px;
+}
+
+* {
+  font-family: Helvetica, Arial, sans-serif;
+  color: @text-color;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  width: 236px;
+  height: 38px;
+  border: 1px solid @border-color;
+  padding: 0 10px;
+  outline: none;
+  font-size: 17px;
+  &:focus {
+    background: #FFFDF2;
+  }
+}
+
+input[type="submit"] {
+  height: 36px;
+  width: auto;
+  border: 1px solid @border-color;
+  border-radius: 2px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  .antialiased(@border-color);
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.wrapper {
+  width: @content-width;
+  margin: auto;
+}
+
+header {
+  height: 85px;
+  width: 100%;
+  div.wrapper {
+    padding-top: 32px;
+    margin: auto;
+    span {
+      font-size: 18px;
+    }
+    form {
+      display: inline;
+    }
+    #btnLogOut {
+      float: right;
+    }
+  }
+}
+
+#content {
+  margin-bottom: 15px;
+  min-height: 560px;
+  div.wrapper {
+    margin: 38px auto;
+    img {
+      border-radius: 6px;
+      float: left;
+    }
+    div.panel {
+      border: 1px solid @border-color;
+      background: white;
+      margin: 0;
+      margin-bottom: 29px;
+      border-radius: 6px;
+      font-size: 14px;
+      &.right {
+        width: 303px;
+        height: 313px;
+        float: right;
+        textarea.blogText {
+          width: 249px;
+          height: 160px;
+          border: 1px solid @border-color;
+        }
+      }
+      &.left {
+        width: @content-width - 327;
+        float: left;
+        div.blogWrapper {
+          padding: 16px 0;
+          padding-left: 16px;
+          border-bottom: 1px solid @border-color;
+          &:last-child {
+            border: none;
+          }
+          span {
+            &.name {
+              font-size: 18px;
+              color: black;
+            }
+            &.time {
+              font-size: 12px;
+              color: #CCC;
+            }
+          }
+          p {
+            margin: 5px 50px 0 10px;
+            padding: 0;
+            text-align: justify;
+            line-height: 1.5;
+            .antialiased(black);
+            span.spacing {
+              padding-left: 9px;
+              margin-left: 9px;
+              height: 10px;
+              border-left: 1px solid @border-color;
+            }
+          }
+        }
+      }
+
+      * {
+        margin: 6px 0;
+      }
+      form {
+        padding: 0 23px;
+      }
+      h1 {
+        border-bottom: 1px solid @border-color;
+        margin: 5px 0;
+        font-weight: normal;
+        font-size: 18px;
+        padding: 13px 23px;
+        height: 23px;
+      }
+      p {
+        padding: 0 24px;
+        margin: 18px 0;
+      }
+    }
+  }
+}
