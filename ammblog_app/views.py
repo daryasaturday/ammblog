@@ -8,10 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from ammblog_app.forms import AuthenticateForm, UserCreateForm, BlogPostForm
 from ammblog_app.models import BlogPost
 
-def index(request, auth_form=None, blog_form=None):
+def index(request):
     # User is logged in
     if request.user.is_authenticated():
-        blogpost_form = blog_form or BlogPostForm()
+        blogpost_form = BlogPostForm(data=request.POST) if request.method == 'POST' else BlogPostForm()
         user = request.user
         posts_self = BlogPost.objects.filter(user=user.id).order_by('-creation_date')
         posts_buddies = BlogPost.objects.filter(user__userprofile__in=user.profile.follows.all)
@@ -24,7 +24,7 @@ def index(request, auth_form=None, blog_form=None):
                        'next_url': '/', })
     else:
         # User is not logged in
-        auth_form = auth_form or AuthenticateForm()
+        auth_form = AuthenticateForm(data=request.POST) if request.method == 'POST' else AuthenticateForm()
 
         return render(request,
                       'home.html',
@@ -40,7 +40,7 @@ def login_view(request):
             return redirect(request.path)
         else:
             # Failure
-            return index(request, auth_form=form)
+            return index(request)
     return redirect('/')
 
 
@@ -77,19 +77,19 @@ def submit(request):
             post.save()
             return redirect(next_url)
         else:
-            return index(request, blog_form=post_form)
+            return index(request)
     return redirect('/')
 
 
 def get_latest(user):
     try:
-        return user.blogpost_set.order_by('id').reverse()[0]
-    except IndexError:
+        return user.blogpost_set.latest('id')
+    except ObjectDoesNotExist:
         return ""
 
 
 @login_required
-def users(request, username="", blogpost_form=None):
+def users(request, username=""):
     if username:
         # Show a profile
         try:
@@ -104,7 +104,7 @@ def users(request, username="", blogpost_form=None):
     users = User.objects.all().annotate(blogpost_count=Count('blogpost'))
     posts = map(get_latest, users)
     obj = zip(users, posts)
-    blogpost_form = blogpost_form or BlogPostForm()
+    blogpost_form = BlogPostForm(data=request.POST) if request.method == 'POST' else BlogPostForm()
     return render(request,
                   'profiles.html',
                   {'obj': obj, 'next_url': '/users/',
